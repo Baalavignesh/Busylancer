@@ -1,0 +1,22 @@
+.img-circle{
+    border-radius: 50%;
+    height : 35%;
+    width: 100%;
+    padding: 10px;
+    transition: 0.5;
+    
+}
+
+.img-circle:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    
+}
+
+.style-none:hover{
+    text-decoration: none;
+}
+
+a{
+    color: inherit;
+}
+
