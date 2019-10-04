@@ -176,7 +176,7 @@
         </script>
     </head>
     <body onload="addCountries()">
-       <form name="signUp" onsubmit="return validateForm();" action="PHPMailer/confirmMail.php" method="post" id="msform">
+       <form name="signUp" onsubmit="return validateForm();" action="registerUser.php" method="post" id="msform">
           <!-- progressbar -->
           <ul id="progressbar">
             <li class="active">Account Setup</li>

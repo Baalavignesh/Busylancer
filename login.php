@@ -81,7 +81,7 @@ if(isset($_GET["email"])){
                 if($value == 1){
                     ?>
                     
-                    <h2 class="fs-title">Please check your email for the confirmation mail and then log in!</h2><br>
+                    <h2 class="fs-title">Sign-up successful! Please login!</h2><br>
 
                     
                     
