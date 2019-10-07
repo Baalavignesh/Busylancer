@@ -20,12 +20,11 @@ ob_start();
 
 <?php
 
-           if(isset($_POST["submitSignup"])){
+           if(isset($_POST["next"])){
                $salt = "happydaytoallofyou123";
                
                $fname = $_POST["fname"];
                $lname = $_POST["lname"];
-               $phone = $_POST["phone"];
                $city = $_POST["city"];
                if($_POST["userType"] == "Employee"){
                    $userType = 1;
@@ -35,7 +34,9 @@ ob_start();
                }
                 
                $email = mysqli_real_escape_string($connection,$_POST["email"]);
-               $password = md5(mysqli_real_escape_string($connection,$_POST["pass"].$salt));
+               echo mysqli_real_escape_string($connection,$_POST["password"].$salt);
+               $password = md5(mysqli_real_escape_string($connection,$_POST["password"].$salt));
+               echo $password;
                $dob = strtotime($_POST["dob"]);
                $dob = date('Y-m-d H:i:s', $dob);
                 
@@ -63,7 +64,7 @@ ob_start();
                	die("Insert into rel table Failed");
                }
 
-               header("Location: login.php?displayconfirm=1");
+               //header("Location: login.php?displayconfirm=1");
                
            }
            

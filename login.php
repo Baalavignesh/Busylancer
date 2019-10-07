@@ -125,45 +125,73 @@ if(isset($_GET["email"])){
             
 <?php
 if(isset($_POST["submit"])){
-    $username = $_POST["username"];
-    $password = $_POST["password"];
-    $user_password = "";
-    $username = mysqli_real_escape_string($connection,$username);
-    $password = mysqli_real_escape_string($connection,$password);
+    $salt = "happydaytoallofyou123";
+
+    $username = mysqli_real_escape_string($connection,$_POST["username"]);
+    $password = md5(mysqli_real_escape_string($connection,$_POST["password"].$salt));
     
-    $hashFormat = "$2y$10$";
-    $salt = "iusesomecrazustrings223";
-    $hashFormat .= $salt;
     
-    $password = substr(crypt($password,$hashFormat),0,32);
-    $query = "SELECT * FROM users WHERE email = '$username' ";
+    $query = "SELECT * FROM user_account WHERE email = '$username' ";
     $result = mysqli_query($connection,$query);
     
     while($row = mysqli_fetch_assoc($result)){
         $first_name = $row["first_name"];
-        $user_id = $row["user_id"];
+        $user_id = $row["id"];
         $user_password = $row["password"];
-        $user_type = $row["user_type"];
+    }
+
+    if(!$result){
+    ?>
+        <h5 class="white">User not registered!</h5><br>
+    <?php
+    
     }
    
-    if(!$result || $user_password !== $password){
-        
+    else if($user_password !== $password){
+    
+        // echo $user_password;
+        // echo $password;    
 ?>
  
-   
-    <h5 class="white">Invalid credentials entered!</h5><br>
+    
+    <h5 class="white">Invalid password entered!</h5><br>
 
 <?php
     }
     else{
-        $_SESSION["user_id"] = $user_id;
         $_SESSION["username"] = $username;
-        $_SESSION["user_type"] = $user_type;
         $_SESSION["first_name"] = $first_name;
-        if($user_type == 0){
+
+        //FREELANCER
+
+        $query = "SELECT * FROM freelancer WHERE user_account_id = '$user_id' ";
+        $result = mysqli_query($connection,$query);
+
+        if(mysqli_num_rows($result) > 0){
+            $row = mysqli_fetch_assoc($result);
+            $_SESSION["id"] = $row["id"];
+            $_SESSION["user_type"] = 1;
+        }
+        else{
+            //HIRER
+
+            $query = "SELECT * FROM hire_manager WHERE user_account_id = '$user_id' ";
+            $result = mysqli_query($connection,$query);
+
+            if(mysqli_num_rows($result) > 0){
+                $row = mysqli_fetch_assoc($result);
+                $_SESSION["id"] = $row["id"];
+                $_SESSION["user_type"] = 0;
+            } 
+
+        }
+
+
+
+        if($_SESSION["user_type"] == 0){
             header("Location: employerdashboard.php");
         }
-        else if($user_type == 1){
+        else if($_SESSION["user_type"] == 1){
             header("Location: profilepage.php");
         }
     }
