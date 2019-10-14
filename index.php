@@ -11,9 +11,8 @@
     console.log("Session variables are not set!");
 </script>
        <?php
-        $_SESSION["user_id"] = -2;
-        $_SESSION["username"] = "";
-        $_SESSION["user_type"] = -1;
+        $_SESSION["USER_ID"] = -2;
+        $_SESSION["USER_TYPE"] = -1;
     }
 
     

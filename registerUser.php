@@ -25,7 +25,7 @@ ob_start();
                
                $fname = $_POST["fname"];
                $lname = $_POST["lname"];
-               $city = $_POST["city"];
+               $location = $_POST["location"];
                if($_POST["userType"] == "Employee"){
                    $userType = 1;
                }
@@ -52,10 +52,10 @@ ob_start();
                $user_account_id = getIDDynamically($email);
 
                if($userType == 0){
-                  $query2 = "INSERT INTO `hire_manager` (`user_account_id`,`location`) VALUES('$user_account_id','$city')";
+                  $query2 = "INSERT INTO `hire_manager` (`user_account_id`,`location`) VALUES('$user_account_id','$location')";
                }
                else{
-                  $query2 = "INSERT INTO `freelancer` (`user_account_id`,`location`) VALUES('$user_account_id','$city')";
+                  $query2 = "INSERT INTO `freelancer` (`user_account_id`,`location`) VALUES('$user_account_id','$location')";
                }
 
                $result = mysqli_query($connection,$query2);

@@ -3,10 +3,9 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
+if(!isset($_SESSION["USER_ID"])){
     header("Location: index.php");
 }
-
 ?>
 
 

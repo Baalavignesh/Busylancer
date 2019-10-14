@@ -9,16 +9,16 @@
         
         <?php
         
-            if($_SESSION["user_type"] == 0){
+            if($_SESSION["USER_TYPE"] == 0){
                 ?>
         <li class="nav-item px-2">
-            <a href="employerdashboard.php" class="nav-link active">Dashboard</a>
+            <a href="employerdashboard.php" class="nav-link active">Hiring nav</a>
         </li>
         <li class="nav-item px-2">
-            <a href="postajob.php" class="nav-link active">Post a Job</a>
+            <a href="postajob.php" class="nav-link active">Hiring nav</a>
         </li>  
         <li class="nav-item px-2">
-            <a href="viewEmployerHistory.php" class="nav-link active">View all jobs posted</a>
+            <a href="viewEmployerHistory.php" class="nav-link active">Hiring nav</a>
         </li>
                 <?php
             }
@@ -26,10 +26,10 @@
                 ?>
 
         <li class="nav-item px-2">
-            <a href="categories.php" class="nav-link active">Jobs</a>
+            <a href="categories.php" class="nav-link active">Freelancer nav</a>
         </li>
         <li class="nav-item px-2">
-            <a href="viewEmployeeHistory.php" class="nav-link active">View all job requests submitted</a>
+            <a href="viewEmployeeHistory.php" class="nav-link active">Freelancer nav</a>
         </li>
                 <?php
             }
@@ -40,7 +40,7 @@
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown mr-3">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <i class="fas fa-user"></i> <?php echo $_SESSION["first_name"] ?>
+                <i class="fas fa-user"></i> My name
             </a>
             <div class="dropdown-menu">
                 <a href="profilepage.php" class="dropdown-item">

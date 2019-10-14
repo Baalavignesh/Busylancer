@@ -4,7 +4,7 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(isset($_SESSION["user_id"]) && $_SESSION["user_id"] != -2){
+if(isset($_SESSION["user_id"]) && $_SESSION["user_id"] !== -2){
     header("Location: index.php");
 }
 
@@ -135,8 +135,8 @@ if(isset($_POST["submit"])){
     $result = mysqli_query($connection,$query);
     
     while($row = mysqli_fetch_assoc($result)){
-        $first_name = $row["first_name"];
         $user_id = $row["id"];
+        $_SESSION["USER_ID"] = $user_id;
         $user_password = $row["password"];
     }
 
@@ -159,8 +159,6 @@ if(isset($_POST["submit"])){
 <?php
     }
     else{
-        $_SESSION["username"] = $username;
-        $_SESSION["first_name"] = $first_name;
 
         //FREELANCER
 
@@ -169,8 +167,8 @@ if(isset($_POST["submit"])){
 
         if(mysqli_num_rows($result) > 0){
             $row = mysqli_fetch_assoc($result);
-            $_SESSION["id"] = $row["id"];
-            $_SESSION["user_type"] = 1;
+            $_SESSION["FREELANCER_ID"] = $row["id"];
+            $_SESSION["USER_TYPE"] = 1;
         }
         else{
             //HIRER
@@ -180,18 +178,18 @@ if(isset($_POST["submit"])){
 
             if(mysqli_num_rows($result) > 0){
                 $row = mysqli_fetch_assoc($result);
-                $_SESSION["id"] = $row["id"];
-                $_SESSION["user_type"] = 0;
+                $_SESSION["HIRING_MANAGER_ID"] = $row["id"];
+                $_SESSION["USER_TYPE"] = 0;
             } 
 
         }
 
 
 
-        if($_SESSION["user_type"] == 0){
+        if($_SESSION["USER_TYPE"] == 0){
             header("Location: employerdashboard.php");
         }
-        else if($_SESSION["user_type"] == 1){
+        else if($_SESSION["USER_TYPE"] == 1){
             header("Location: profilepage.php");
         }
     }

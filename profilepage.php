@@ -3,16 +3,19 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
-    header("Location: index.php");
-}
+include("includes/getDetails.php");
+$user = getDetails()[0];
+$freelancer = getDetails()[1];
+// if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
+//     header("Location: index.php");
+// }
 ?>
 
 <?php
 
 if(isset($_GET["deletepropic"])){
-    $cur = $_SESSION["user_id"];
-    $del = "UPDATE users SET profile_picture='avatar.png' WHERE user_id='$cur'";
+    $fid = $_SESSION["FREELANCER_ID"];
+    $del = "UPDATE freelancer SET profile_picture_url='img/avatar.png' WHERE id='$fid'";
     $del = mysqli_query($connection,$del);
     header("Location: profilepage.php");
 }
@@ -23,7 +26,7 @@ if(isset($_GET["deletepropic"])){
 
 if(isset($_POST["submit"])){
 
-    $location = "img/";
+    $path = "img/";
     $file = $_FILES['propic'];
     $file_name = $file["name"];
     $file_type = $file ['type'];
@@ -33,33 +36,43 @@ if(isset($_POST["submit"])){
     //Restriction to the image. You can upload any types of file for example video file, mp3 file, .doc or .pdf just mention here in OR condition. 
 
     if($file_name!="" && ($file_type="image/jpeg"||$file_type="image/png"||$file_type="image/gif")&& $file_size<=614400){
-        move_uploaded_file($file_path,$location . $file_name);
+        move_uploaded_file($file_path,$path . $file_name);
     }
     else{
         $file_name = "";
     }
-    $id = $_SESSION["user_id"];
+    $fid = $_SESSION["FREELANCER_ID"];
     
     $fn = $_POST["fn"];
     $ln = $_POST["ln"];
-    $phone = $_POST["phone"];
     $dob = strtotime($_POST["dob"]);
-    $dob = date('Y-m-d H:i:s', $dob);    
-    $bio = $_POST["bio"];
+    $dob = date('Y-m-d H:i:s', $dob);
+    $location = $_POST["location"];
+    $overview = $_POST["overview"];
     
-    $query1="UPDATE users SET first_name='$fn',last_name='$ln',dob='$dob',phone_number ='$phone',bio='$bio' WHERE user_id='$id'";
+    $user_account_id = $_SESSION["USER_ID"];
+
+    $query1="UPDATE `user_account` SET `first_name`='$fn',`last_name`='$ln',`dob`='$dob' WHERE id='$user_account_id'";
     $result1 = mysqli_query($connection,$query1);
     if(!$result1){
-        die("Query failed!");
-    }
-    if($file_name != ""){
-        $query1 = "UPDATE users SET profile_picture='$file_name' WHERE user_id='$id'";
-        $result1 = mysqli_query($connection,$query1);
-        if(!$result1){
-        die("Query failed!");
-        }
+        die("Query 1 failed!" . mysqli_error($connection));
     }
 
+
+    if($file_name != ""){
+        $file_name = "img/".$file_name;
+    }
+    else{
+       $file_name = "img/avatar.png"; 
+    }
+    $query1 = "UPDATE freelancer SET profile_picture_url='$file_name',overview='$overview',location='$location' WHERE id='$fid'";
+    $result1 = mysqli_query($connection,$query1);
+    if(!$result1){
+        die("Query 2 failed!" . mysqli_error($connection));
+    }
+
+    header("Location: profilepage.php");
+    
 }
 
 ?>
@@ -82,9 +95,12 @@ if(isset($_POST["submit"])){
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
 <link rel="stylesheet" href="css/profilepage.css" type="text/css">
+
+<?php include("includeCountries.php"); ?>
+
 </head>
 
-<body>
+<body onload="addCountries()">
     <?php include("includes/navbar.php");?>
     <header id ="main-header" class = "py-2 bg-primary text-white">
         <div class="container">
@@ -98,7 +114,7 @@ if(isset($_POST["submit"])){
     <form method="post" action="profilepage.php" enctype="multipart/form-data">
        <?php
         $id = $_SESSION["user_id"];
-        $query = "SELECT * FROM users WHERE user_id='$id'";
+        $query = "SELECT * FROM freelancer WHERE id='$id'";
         $result = mysqli_query($connection,$query);
         $row = mysqli_fetch_assoc($result);
         if(!$result){
@@ -111,7 +127,7 @@ if(isset($_POST["submit"])){
               <div class="row">
 
                     <div class="col-md-3">
-                                    <img src="img/<?php echo $row['profile_picture']?>" alt="profileimage" class="img-circle">
+                                    <img src="<?php echo $freelancer['profile_picture_url']?>" alt="profileimage" class="img-circle">
                                     <h3 class= "text-center">Your Avatar</h3>
                                 Edit Image
                                 <input type="file" id="propic" name="propic" class="btn btn-primary btn-block" placeholder="Edit">
@@ -127,24 +143,24 @@ if(isset($_POST["submit"])){
                       
                         <div class="form-group">
                           <label for="fname">First Name</label>
-                          <input name="fn" type="text" class="form-control" placeholder="First Name" value="<?php echo $row["first_name"];?>">
+                          <input name="fn" type="text" class="form-control" placeholder="First Name" value="<?php echo $user["first_name"];?>">
                         </div>
                         <div class="form-group">
                           <label for="lname">Last Name</label>
-                          <input name="ln" type="text" class="form-control"  placeholder="Last Name" value="<?php echo $row["last_name"];?>">
+                          <input name="ln" type="text" class="form-control"  placeholder="Last Name" value="<?php echo $user["last_name"];?>">
                         </div>
                         <div class="form-group">
                                 <label for="dob">Date of Birth</label>
-                                <input type = "date" name="dob" class="form-control" min = "1900-01-01" max = "2018-12-31" value="<?php echo $row["dob"];?>"> 
+                                <input type = "date" name="dob" class="form-control" min = "1900-01-01" max = "2018-12-31" value="<?php echo $user["dob"];?>"> 
                         </div>
                         <div class="form-group">
-                                <label for="number">Mobile Number</label>
-                                <input name="phone" type="tel" class="form-control"  maxlength="10" placeholder="Number" value="<?php echo $row["phone_number"];?>">
+                                <label for="location">Location</label>
+                                <select name="location" id="location" class="form-control"  placeholder="Location" value="<?php echo $freelancer["location"];?>"></select>
                         </div>
 
                         <div class="form-group">
-                          <label for="bio">Bio</label>
-                          <input name="bio" class="form-control" name="editor1" value="<?php echo $row["bio"]?>">
+                          <label for="overview">Overview</label>
+                          <input name="overview" id="overview" class="form-control" value="<?php echo $freelancer["overview"]?>">
                         </div>
                         
                         <div class="form-group">
