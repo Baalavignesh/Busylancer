@@ -11,10 +11,10 @@ if(!isset($_SESSION["USER_ID"])){
 
 <?php
 
-if(isset($_GET["accepted_user_id"])){
-    $id = $_GET["accepted_user_id"];
+if(isset($_GET["accepted_USER_ID"])){
+    $id = $_GET["accepted_USER_ID"];
     $job_id = $_GET["job_id"];
-    $poster_id = $_SESSION["user_id"];
+    $poster_id = $_SESSION["USER_ID"];
     
     $setFlag = "UPDATE acceptedjobs SET flag='1' WHERE job_id = '$job_id'";
     $resFlag = mysqli_query($connection,$setFlag);
@@ -57,8 +57,8 @@ function isJobAvailable($job_id){
 
 
 <?php
-$id = $_SESSION["user_id"];
-$query = "SELECT * FROM users WHERE user_id = '$id'";
+$id = $_SESSION["USER_ID"];
+$query = "SELECT * FROM user_account WHERE USER_ID = '$id'";
 $result = mysqli_query($connection,$query);
 if(!$result){
     die("Failes!");
@@ -119,9 +119,6 @@ $row = mysqli_fetch_assoc($result);
                     <a href="#" class="style-none">
                             <h3 class= "text-center"><?php echo $_SESSION["first_name"]; echo " " .$row["last_name"]?></h3>
                         </a>
-                        <div class="mt-4">
-                            <h6>Jobs Posted : <?php echo $row["jobs_posted"]?> </h6>
-                        </div>
                     </div>
             </div>
         </div>
@@ -133,7 +130,7 @@ $row = mysqli_fetch_assoc($result);
 
             <?php include("includes/employerbar.php") ?>
             <?php
-            $id = $_SESSION["user_id"];
+            $id = $_SESSION["USER_ID"];
             $q = "SELECT * FROM  acceptedjobs WHERE poster_id = '$id'";
             $R = mysqli_query($connection,$q);
             if(!$R){
@@ -172,8 +169,8 @@ $row = mysqli_fetch_assoc($result);
                 <div class="card-body text-center">
                     <h4 class="card-title"> <?php echo $title;?> </h4>     <!-- THE CATOGORY--> 
                     <p class="card-text"> <?php echo $desc;?></p>    <!-- DESCRIPTION--> 
-                    <a class="btn btn-primary" href = "viewProfile.php?user_id=<?php echo $ROW["user_id"];?>">View profile</a>
-                    <a class="btn btn-primary" href = "employerdashboard.php?accepted_user_id=<?php echo $ROW["user_id"];?>&job_id=<?php echo $jobid?>&acceptor=<?php echo $ROW["user_name"];?>">Accept request</a>
+                    <a class="btn btn-primary" href = "viewProfile.php?USER_ID=<?php echo $ROW["USER_ID"];?>">View profile</a>
+                    <a class="btn btn-primary" href = "employerdashboard.php?accepted_USER_ID=<?php echo $ROW["USER_ID"];?>&job_id=<?php echo $jobid?>&acceptor=<?php echo $ROW["user_name"];?>">Accept request</a>
 <!--                        <a class="btn btn-danger" hreft = "#" > Decline</a>-->
                 </div>
 

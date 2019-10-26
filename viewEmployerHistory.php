@@ -3,15 +3,15 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
+if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
     header("Location: index.php");
 }
 
 ?>
 
 <?php
-$id = $_SESSION["user_id"];
-$query = "SELECT * FROM users WHERE user_id = '$id'";
+$id = $_SESSION["USER_ID"];
+$query = "SELECT * FROM users WHERE USER_ID = '$id'";
 $result = mysqli_query($connection,$query);
 if(!$result){
     die("Failes!");
@@ -86,8 +86,8 @@ $row = mysqli_fetch_assoc($result);
 
             <?php include("includes/employerbar.php") ?>
             <?php
-            $id = $_SESSION["user_id"];
-            $q = "SELECT * FROM jobs WHERE user_id = '$id'";
+            $id = $_SESSION["USER_ID"];
+            $q = "SELECT * FROM jobs WHERE USER_ID = '$id'";
             $R = mysqli_query($connection,$q);
             if(!$R){
                 die("Query failed");
@@ -116,12 +116,12 @@ $row = mysqli_fetch_assoc($result);
                     $firstnamequery = "SELECT * FROM users WHERE first_name='$fn'";
                     $firstnameresult = mysqli_query($connection,$firstnamequery);
                     $firstnamerow = mysqli_fetch_assoc($firstnameresult);
-                    $idOfUser = $firstnamerow["user_id"];
+                    $idOfUser = $firstnamerow["USER_ID"];
                     ?>
                     <p class="card-text"> <?php if($ROW["flag"] == "1"){
                     echo "Job relinquished. Given to : <b>" . $ROW["job_acceptor"] . "</b>";
                         ?>
-                        <br><a class="btn btn-primary" href = "viewProfile.php?user_id=<?php echo $idOfUser;?>">View profile</a>
+                        <br><a class="btn btn-primary" href = "viewProfile.php?USER_ID=<?php echo $idOfUser;?>">View profile</a>
                         
                         <?php
                 }

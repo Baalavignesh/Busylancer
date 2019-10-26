@@ -34,9 +34,7 @@ ob_start();
                }
                 
                $email = mysqli_real_escape_string($connection,$_POST["email"]);
-               echo mysqli_real_escape_string($connection,$_POST["password"].$salt);
                $password = md5(mysqli_real_escape_string($connection,$_POST["password"].$salt));
-               echo $password;
                $dob = strtotime($_POST["dob"]);
                $dob = date('Y-m-d H:i:s', $dob);
                 
@@ -64,7 +62,7 @@ ob_start();
                	die("Insert into rel table Failed");
                }
 
-               //header("Location: login.php?displayconfirm=1");
+               header("Location: login.php?displayconfirm=1");
                
            }
            

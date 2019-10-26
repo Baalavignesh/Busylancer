@@ -3,15 +3,15 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
+if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
     header("Location: index.php");
 }
 
 ?>
 
 <?php
-$id = $_SESSION["user_id"];
-$query = "SELECT * FROM users WHERE user_id = '$id'";
+$id = $_SESSION["USER_ID"];
+$query = "SELECT * FROM users WHERE USER_ID = '$id'";
 $result = mysqli_query($connection,$query);
 if(!$result){
     die("Failes!");
@@ -88,7 +88,7 @@ $row = mysqli_fetch_assoc($result);
 
                         if(isset($_POST["submit"])){
                             $newjobs =  $row["jobs_posted"] + 1;
-                            $employerBro = "UPDATE users SET jobs_posted = '$newjobs' WHERE user_id='$id'";
+                            $employerBro = "UPDATE users SET jobs_posted = '$newjobs' WHERE USER_ID='$id'";
                             $employeres = mysqli_query($connection,$employerBro);
                             if(!$employeres){
                                 die("Failed to update the jobs posted.");
@@ -105,9 +105,9 @@ $row = mysqli_fetch_assoc($result);
 
                             $title = $_POST["title"];
                             $description = $_POST["description"];
-                            $user_id = $_SESSION["user_id"];
+                            $USER_ID = $_SESSION["USER_ID"];
                             $user_name = $_SESSION["first_name"];
-                            $q2 = "INSERT INTO jobs(job_title,job_description,user_id,user_name,category_id) VALUES('$title','$description','$user_id','$user_name','$category_id')";
+                            $q2 = "INSERT INTO jobs(job_title,job_description,USER_ID,user_name,category_id) VALUES('$title','$description','$USER_ID','$user_name','$category_id')";
                             $res = mysqli_query($connection,$q2);
                             if(!$res){
                                 die("Insert operation failed !");

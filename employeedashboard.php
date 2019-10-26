@@ -3,7 +3,7 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
+if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
     header("Location: index.php");
 }
 
@@ -48,8 +48,8 @@ if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
 
     <section>
 <?php
-        $id = $_SESSION["user_id"];
-        $query = "SELECT * FROM users WHERE user_id='$id'";
+        $id = $_SESSION["USER_ID"];
+        $query = "SELECT * FROM users WHERE USER_ID='$id'";
         $result = mysqli_query($connection,$query);
         $row = mysqli_fetch_assoc($result);
         if(!$result){

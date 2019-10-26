@@ -4,7 +4,7 @@
     ob_start();
 
     include("includes/db.php");
-    if(!isset($_SESSION["user_id"])){
+    if(!isset($_SESSION["USER_ID"])){
         ?>
             
 <script>
@@ -53,7 +53,7 @@
                     <li class = "nav-item">
                         <?php
                         
-                        if($_SESSION["user_id"] == -2){
+                        if($_SESSION["USER_ID"] == -2){
                             ?>
                             
                             <a href = "#explore-head-section" class = "nav-link">Explore</a>
@@ -61,13 +61,13 @@
                             <?php
                         }
                         else{
-                            if($_SESSION["user_type"] == "0"){
+                            if($_SESSION["USER_TYPE"] == "0"){
                             ?>
                                 <a href = "#explore-head-section" class = "nav-link">Hire</a>
                             <?php
                             
                             }
-                            else if($_SESSION["user_type"] == "1"){
+                            else if($_SESSION["USER_TYPE"] == "1"){
                                 ?>
                                 
                                 <a href = "#explore-head-section" class = "nav-link">Work</a>
@@ -82,7 +82,7 @@
                     <li class = "nav-item">
                        <?php
                         
-                        if($_SESSION["user_id"] == -2){
+                        if($_SESSION["USER_ID"] == -2){
                             ?>
                             
                         <a href = "login.php" class = "nav-link">Login</a>
@@ -102,7 +102,7 @@
                     
                     <?php
                     
-                    if($_SESSION["user_id"] != -2){
+                    if($_SESSION["USER_ID"] != -2){
                         ?>
                         
                         <li class="nav-item"><a class="nav-link" href="includes/logout.php">Logout</a></li>

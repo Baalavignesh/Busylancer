@@ -3,15 +3,15 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
+if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
     header("Location: index.php");
 }
 
 ?>
 
 <?php
-$id = $_SESSION["user_id"];
-$query = "SELECT * FROM users WHERE user_id = '$id'";
+$id = $_SESSION["USER_ID"];
+$query = "SELECT * FROM users WHERE USER_ID = '$id'";
 $result = mysqli_query($connection,$query);
 if(!$result){
     die("Failes!");
@@ -82,8 +82,8 @@ $row = mysqli_fetch_assoc($result);
         <div class="col-lg-9">
 
             <?php
-            $id = $_SESSION["user_id"];
-            $q = "SELECT * FROM acceptedjobs WHERE user_id = '$id'";
+            $id = $_SESSION["USER_ID"];
+            $q = "SELECT * FROM acceptedjobs WHERE USER_ID = '$id'";
             $R = mysqli_query($connection,$q);
             if(!$R){
                 die("Query failed");

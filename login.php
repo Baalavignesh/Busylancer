@@ -4,7 +4,7 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(isset($_SESSION["user_id"]) && $_SESSION["user_id"] !== -2){
+if(isset($_SESSION["USER_ID"]) && $_SESSION["USER_ID"] !== -2){
     header("Location: index.php");
 }
 
@@ -24,10 +24,10 @@ if(isset($_GET["email"])){
     $result = mysqli_query($connection,$query);
     
     while($row = mysqli_fetch_assoc($result)){
-        $id = $row["user_id"];
+        $id = $row["USER_ID"];
         $pass = $row["password"];
         if($pass == substr($hashedpass,0,32)){
-            $query1 = "UPDATE users SET active='1' WHERE user_id='$id' ";
+            $query1 = "UPDATE users SET active='1' WHERE USER_ID='$id' ";
             $result1 = mysqli_query($connection,$query1);
             header("Location: login.php");
 
@@ -135,8 +135,8 @@ if(isset($_POST["submit"])){
     $result = mysqli_query($connection,$query);
     
     while($row = mysqli_fetch_assoc($result)){
-        $user_id = $row["id"];
-        $_SESSION["USER_ID"] = $user_id;
+        $USER_ID = $row["user_account_id"];
+        $_SESSION["USER_ID"] = $USER_ID;
         $user_password = $row["password"];
     }
 
@@ -162,23 +162,21 @@ if(isset($_POST["submit"])){
 
         //FREELANCER
 
-        $query = "SELECT * FROM freelancer WHERE user_account_id = '$user_id' ";
+        $query = "SELECT * FROM freelancer WHERE user_account_id = '$USER_ID' ";
         $result = mysqli_query($connection,$query);
 
         if(mysqli_num_rows($result) > 0){
             $row = mysqli_fetch_assoc($result);
-            $_SESSION["FREELANCER_ID"] = $row["id"];
             $_SESSION["USER_TYPE"] = 1;
         }
         else{
             //HIRER
 
-            $query = "SELECT * FROM hire_manager WHERE user_account_id = '$user_id' ";
+            $query = "SELECT * FROM hire_manager WHERE user_account_id = '$USER_ID' ";
             $result = mysqli_query($connection,$query);
 
             if(mysqli_num_rows($result) > 0){
                 $row = mysqli_fetch_assoc($result);
-                $_SESSION["HIRING_MANAGER_ID"] = $row["id"];
                 $_SESSION["USER_TYPE"] = 0;
             } 
 

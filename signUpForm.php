@@ -30,6 +30,24 @@
         <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
         <script src="includes/validation.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
+
+        <script>  
+        $(document).ready(function(){
+            $("#company").hide();
+            $('#userType').on('change', function() {
+                console.log(this.value);
+              if ( this.value === "Employer")
+              {
+                $("#company").show();
+              }
+              else
+              {
+                $("#company").hide();
+              }
+            });
+        });
+        </script>
+        
         
         
         <script>
@@ -193,10 +211,29 @@
             <input placeholder="Date Of Birth" id="dob" name="dob" type = "date" min = "1900-01-01" max = "2018-12-31" value="2001-01-01">
         
 
-            <select name="userType" id="userType" class = "unibox">
+            <select name="userType" id="userType" class = "unibox" >
                     <option value="Employee">Work</option>
                     <option value="Employer">Hire</option>
-            </select>    
+            </select>  
+
+            <select name="company" id="company" class = "unibox">
+                    <?php
+
+                        $query = "SELECT * FROM company";
+                        $result = mysqli_query($connection,$query);
+                        if(!$result){
+                            die("Failed!");
+                        }
+
+                        while($row = mysqli_fetch_assoc($result)) {
+                    ?>
+                         <option value="<?php echo $row["company_name"]?>"> <?php echo $row["company_name"]?> </option>
+                    <?php
+                        }
+                       
+                    ?>
+            </select> 
+
             <br>
             
 

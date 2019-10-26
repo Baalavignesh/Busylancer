@@ -16,10 +16,10 @@ if(isset($_POST["submitNewPassword"])){
                
                 $password = crypt(mysqli_real_escape_string($connection,$_POST["password"]),$hashFormat);
     
-                $user_id = $_SESSION["temporaryIDForForgotPassword"];
+                $USER_ID = $_SESSION["temporaryIDForForgotPassword"];
                 unset($_SESSION["temporaryIDForForgotPassword"]);
     
-                $query = "UPDATE users SET password='$password' WHERE user_id='$user_id'";
+                $query = "UPDATE users SET password='$password' WHERE USER_ID='$USER_ID'";
                 $result = mysqli_query($connection,$query);
                 if(!$result){
                     die("Cannot update password!");

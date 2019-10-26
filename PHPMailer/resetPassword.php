@@ -21,7 +21,7 @@ ob_start();
 
                 $row = mysqli_fetch_assoc($result);
                 $hashedPass = $row["password"]; //we get only 32 characters here
-                $id = $row["user_id"];
+                $id = $row["USER_ID"];
 
                 $mail = new PHPMailer;
 
@@ -64,7 +64,7 @@ if(isset($_GET["id"])){
     $id = $_GET["id"];
     $password = $_GET["password"];
     
-    $query = "SELECT * FROM users WHERE user_id='$id'";
+    $query = "SELECT * FROM users WHERE USER_ID='$id'";
     $result = mysqli_query($connection,$query);
     
     $row = mysqli_fetch_assoc($result);

@@ -3,7 +3,7 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
+if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
     header("Location: index.php");
 }
 ?>
@@ -14,13 +14,13 @@ if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
 
 if(isset($_GET["job_id"])){
     $job_id = $_GET["job_id"];
-    $user_id = $_GET["user_id"];
+    $USER_ID = $_GET["USER_ID"];
     $user_name = $_GET["user_name"];
     $poster_id = $_GET["poster_id"];
     $poster_name = $_GET["poster_name"];
     
     
-    $quer = "INSERT INTO acceptedjobs(job_id,user_id,user_name,poster_id,poster_name) VALUES('$job_id','$user_id','$user_name','$poster_id','$poster_name')";
+    $quer = "INSERT INTO acceptedjobs(job_id,USER_ID,user_name,poster_id,poster_name) VALUES('$job_id','$USER_ID','$user_name','$poster_id','$poster_name')";
     $resu = mysqli_query($connection,$quer);
     if(!$resu){
         die("Insert into accepted jobs failed !");

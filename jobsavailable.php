@@ -3,16 +3,16 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == -2){
+if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
     header("Location: index.php");
 }
 
 ?>
 <?php
 
-function isAlreadySubmitted($job_id,$user_id){
+function isAlreadySubmitted($job_id,$USER_ID){
     global $connection;
-    $query = "SELECT * FROM acceptedjobs WHERE job_id='$job_id' AND user_id='$user_id'";
+    $query = "SELECT * FROM acceptedjobs WHERE job_id='$job_id' AND USER_ID='$USER_ID'";
     $result = mysqli_query($connection,$query);
     
     if(!$result){
@@ -85,7 +85,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     die("Select failed !");
                 }
                 while($ro = mysqli_fetch_assoc($res)){
-                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["user_id"])){
+                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["USER_ID"])){
                     continue;
                 }
                     ?>
@@ -104,7 +104,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     <p class="card-text"> <?php echo $ro["job_description"];?></p>    <!-- DESCRIPTION--> 
                     
                     
-                    <a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&user_id=<?php echo $_SESSION["user_id"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["user_id"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>
+                    <a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&USER_ID=<?php echo $_SESSION["USER_ID"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["USER_ID"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>
                 </div>
 
             </div>
@@ -122,7 +122,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     die("Select failed !");
                 }
                 while($ro = mysqli_fetch_assoc($res)){
-                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["user_id"])){
+                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["USER_ID"])){
                     continue;
                 }
                     ?>
@@ -141,7 +141,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     <p class="card-text"> <?php echo $ro["job_description"];?></p>    <!-- DESCRIPTION--> 
                     
                     
-<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&user_id=<?php echo $_SESSION["user_id"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["user_id"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
+<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&USER_ID=<?php echo $_SESSION["USER_ID"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["USER_ID"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
                 </div>
 
             </div>
@@ -160,7 +160,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     die("Select failed !");
                 }
                 while($ro = mysqli_fetch_assoc($res)){
-                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["user_id"])){
+                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["USER_ID"])){
                     continue;
                 }
                     ?>
@@ -179,7 +179,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     <p class="card-text"> <?php echo $ro["job_description"];?></p>    <!-- DESCRIPTION--> 
                     
                     
-<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&user_id=<?php echo $_SESSION["user_id"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["user_id"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
+<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&USER_ID=<?php echo $_SESSION["USER_ID"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["USER_ID"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
                 </div>
 
             </div>
@@ -198,7 +198,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     die("Select failed !");
                 }
                 while($ro = mysqli_fetch_assoc($res)){
-                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["user_id"])){
+                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["USER_ID"])){
                     continue;
                 }
                     ?>
@@ -217,7 +217,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     <p class="card-text"> <?php echo $ro["job_description"];?></p>    <!-- DESCRIPTION--> 
                     
                     
-<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&user_id=<?php echo $_SESSION["user_id"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["user_id"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
+<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&USER_ID=<?php echo $_SESSION["USER_ID"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["USER_ID"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
                 </div>
 
             </div>
@@ -236,7 +236,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     die("Select failed !");
                 }
                 while($ro = mysqli_fetch_assoc($res)){
-                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["user_id"])){
+                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["USER_ID"])){
                     continue;
                 }
                     ?>
@@ -255,7 +255,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     <p class="card-text"> <?php echo $ro["job_description"];?></p>    <!-- DESCRIPTION--> 
                     
                     
-<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&user_id=<?php echo $_SESSION["user_id"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["user_id"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
+<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&USER_ID=<?php echo $_SESSION["USER_ID"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["USER_ID"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
                 </div>
 
             </div>
@@ -274,7 +274,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     die("Select failed !");
                 }
                 while($ro = mysqli_fetch_assoc($res)){
-                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["user_id"])){
+                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["USER_ID"])){
                     continue;
                 }
                     ?>
@@ -293,7 +293,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     <p class="card-text"> <?php echo $ro["job_description"];?></p>    <!-- DESCRIPTION--> 
                     
                     
-<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&user_id=<?php echo $_SESSION["user_id"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["user_id"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
+<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&USER_ID=<?php echo $_SESSION["USER_ID"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["USER_ID"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
                 </div>
 
             </div>
@@ -312,7 +312,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     die("Select failed !");
                 }
                 while($ro = mysqli_fetch_assoc($res)){
-                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["user_id"])){
+                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["USER_ID"])){
                     continue;
                 }
                     ?>
@@ -331,7 +331,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     <p class="card-text"> <?php echo $ro["job_description"];?></p>    <!-- DESCRIPTION--> 
                     
                     
-<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&user_id=<?php echo $_SESSION["user_id"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["user_id"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
+<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&USER_ID=<?php echo $_SESSION["USER_ID"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["USER_ID"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                    
                 </div>
 
             </div>
@@ -350,7 +350,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     die("Select failed !");
                 }
                 while($ro = mysqli_fetch_assoc($res)){
-                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["user_id"])){
+                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["USER_ID"])){
                     continue;
                 }
                     ?>
@@ -369,7 +369,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     <p class="card-text"> <?php echo $ro["job_description"];?></p>    <!-- DESCRIPTION--> 
                     
                     
-<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&user_id=<?php echo $_SESSION["user_id"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["user_id"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>
+<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&USER_ID=<?php echo $_SESSION["USER_ID"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["USER_ID"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>
                 </div>
 
             </div>
@@ -388,7 +388,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     die("Select failed !");
                 }
                 while($ro = mysqli_fetch_assoc($res)){
-                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["user_id"])){
+                    if(isAlreadySubmitted($ro["job_id"],$_SESSION["USER_ID"])){
                     continue;
                 }
                     ?>
@@ -407,7 +407,7 @@ function isAlreadySubmitted($job_id,$user_id){
                     <p class="card-text"> <?php echo $ro["job_description"];?></p>    <!-- DESCRIPTION--> 
                     
                     
-<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&user_id=<?php echo $_SESSION["user_id"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["user_id"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                   
+<a class="btn btn-success" href = "categories.php?job_id=<?php echo $ro["job_id"]?>&USER_ID=<?php echo $_SESSION["USER_ID"]?>&user_name=<?php echo $_SESSION["first_name"]?>&poster_id=<?php echo $ro["USER_ID"] ?>&poster_name=<?php echo $ro["user_name"];?>">Submit</a>                   
                 </div>
 
             </div>
