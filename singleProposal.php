@@ -17,6 +17,33 @@ $freelancer_hirer = getDetails();
 
 
 
+<?php
+
+
+if(isset($_POST["submit"])){
+    $expected_duration =  $_POST["expected_duration"];
+    $message =  $_POST["message"];
+    $message_type = 1;
+    
+    $pid = $_POST["proposal_id"];
+    if($_SESSION["USER_TYPE"] == 0){
+        $message_type = 0;
+    }
+
+    
+    $query = "INSERT INTO message(proposal_id,message_text,message_type) VALUES('$pid','$message','$message_type')";
+    $result = mysqli_query($connection,$query);
+
+    header("Location: singleProposal.php?proposal_id=" . $pid);
+}
+
+
+
+?>
+
+
+
+
 
 <html>
 <head>
@@ -72,11 +99,13 @@ $freelancer_hirer = getDetails();
         </div>
 
         <?php
+
             if(!isset($_GET["proposal_id"])){
                 header("Location : index.php");
             }
 
             $pid = $_GET["proposal_id"];
+
 
             $query = "SELECT * FROM proposal join job on proposal.job_id = job.id join freelancer on proposal.freelancer_id = freelancer.id join user_account on freelancer.user_account_id = user_account.user_account_id join skill on job.main_skill_id = skill.id join complexity on job.complexity_id = complexity.id join expected_duration on job.expected_duration_id = expected_duration.id WHERE proposal.id =  '$pid'";
             $result = mysqli_query($connection,$query);
@@ -136,26 +165,112 @@ $freelancer_hirer = getDetails();
                         </div>
                     </div>
                   </div>
+                <form action="" method="post">
                   <div class="card">
                     <div class="card-header">
                       <h4>Communication</h4>
                     </div>
+                    <?php
+
+                        if($_SESSION["USER_TYPE"] == 1){
+                            $readonly = "readonly";
+                        }
+                        else{
+                            $readonly = "";
+                        }
+
+                    ?>
+
                     <div class="card-body">
-                      <div class="alert alert-success" role="alert">
-                          <strong>Well done!</strong> You successfully read this important alert message.
+                        <div class="form-group">
+                        <label for="expected_duration">Expected duration</label>
+                        
+                        <select <?php echo $readonly ?> name="expected_duration" class="form-control">
+
+                            <?php
+                            $job_id = $row["job_id"];
+                            $q = "SELECT * FROM expected_duration left join job on job.expected_duration_id = expected_duration.id and job.id = '$job_id'";
+                            $result = mysqli_query($connection,$q);
+                            if(!$result){
+                                die("Error");
+                            }
+
+                            while($row = mysqli_fetch_assoc($result)){
+                                if($row["job_title"] == NULL){
+                                    ?>
+                                    <option value="<?php echo $row["duration_text"] ?>"><?php echo $row["duration_text"] ?></option>
+                                
+                                    <?php
+                                }
+                                else{
+                                    ?>
+                                    <option selected value="<?php echo $row["duration_text"] ?>"><?php echo $row["duration_text"] ?></option>
+                                    <?php
+                                }
+
+
+                            }
+
+
+                            ?>
+                                            
+
+                         </select>           
                         </div>
-                        <div class="alert alert-info" role="alert">
-                          <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
-                        </div>
-                        <form action="singleProposal.php" method="post">
+
+
+                        <?php
+
+                            $query = "select * from message where proposal_id = '$pid'";
+                            $result = mysqli_query($connection,$query);
+                            while($row = mysqli_fetch_array($result)){
+                                ?>
+
+                                <?php
+
+                                    if($row["message_type"] == 0){
+                                        ?>
+
+                                            <div class="alert alert-success" role="alert">
+                                              <strong>Hirer : </strong> <?php echo $row["message_text"] ?>
+                                            </div>
+
+                                        <?php
+                                    }
+                                    else{
+                                        ?>
+
+                                            <div class="alert alert-info" role="alert">
+                                              <strong>Freelancer : </strong> <?php echo $row["message_text"] ?>
+                                            </div>
+
+
+                                        <?php
+                                    }
+
+                                ?>
+
+
+
+                                <?php
+                            }
+
+                        ?>
+
                         <div class="form-group">
                                 <label for="message">Message</label>
-                                <input required name="message" type="text" class="form-control"  placeholder="Enter message">
+                                <input required name="message" id="message" type="text" class="form-control"  placeholder="Enter message">
                         </div>
-                        </form>
-                        <!-- display messages as blocks -->
+                        <div class="form-group">
+                                <input name="proposal_id" id="proposal_id" type="hidden" class="form-control"  value="<?php echo $pid;?>">
+                        </div>
+                        <div class="form-group">
+                            <button name="submit" type="submit" class="btn btn-primary        btn-lg"> Send message </button>
+                        </div>
                     </div>
                   </div>
+                </form>
+                        <!-- display messages as blocks -->
                 </div>
 
 </div>
