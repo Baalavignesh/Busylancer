@@ -29,10 +29,22 @@
         <li class="nav-item px-2">
             <a href="profilepage.php" class="nav-link active">Profile page</a>
         </li>
+        <li class="nav-item px-2">
+            <a href="viewAllProposalsMade.php" class="nav-link active">Proposal history</a>
+        </li>
                 <?php
             }
         ?>
 
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+
+        <li>
+            <a href = "includes/logout.php" class = "nav-link">
+                <i class ="fas fa-sign-out-alt"></i>Logout
+            </a>
+        </li>
     </ul>
 
 </div>
