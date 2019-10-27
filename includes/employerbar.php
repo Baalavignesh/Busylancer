@@ -6,11 +6,7 @@
                     <button type="button" class="btn btn-primary mr-4 btn-lg" onclick="">Post a Job </button>
                 
                 </a>
-                <a href ="viewEmployerHistory.php">
-                    
-                    <button type="button" class="btn btn-success ml-4 btn-lg" onclick="" >View all jobs posted</button>
 
-                </a>    
             </div>
 
         </div>

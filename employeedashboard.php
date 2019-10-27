@@ -7,6 +7,27 @@ if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
     header("Location: index.php");
 }
 
+include("includes/getDetails.php");
+
+$freelancer = getDetails();
+
+?>
+
+
+<?php
+
+    if(isset($_POST["submit"])){
+        $fid = $freelancer["id"];
+        $amt = $_POST["proposal_amount"];
+        $job_id = $_POST["job_id"];
+        $q = "INSERT INTO proposal(job_id,freelancer_id,payment_amount) VALUES('$job_id','$fid','$amt')";
+        $r = mysqli_query($connection,$q);
+        if(!$r){
+            die("Query failed!" . mysqli_error($connection));
+        }
+        header("Location : employeedashboard.php"); 
+    }
+
 ?>
 
 
@@ -47,16 +68,7 @@ if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
     
 
     <section>
-<?php
-        $id = $_SESSION["USER_ID"];
-        $query = "SELECT * FROM users WHERE USER_ID='$id'";
-        $result = mysqli_query($connection,$query);
-        $row = mysqli_fetch_assoc($result);
-        if(!$result){
-            die("Query failure!");
-        }
-        
-?>
+
 
 <div class="container">
     <div class="row">
@@ -64,12 +76,12 @@ if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
             <div class="col-md-3">
                     <div class="card mt-3">
                     <a href="#">
-                        <img src="img/<?php echo $row['profile_picture'] ?>" alt="profileimage" class="img-circle card-img-top">
+                        <img src="<?php echo $freelancer['profile_picture_url'] ?>" alt="profileimage" class="img-circle card-img-top">
                     </a>
 
                     <div class="card-footer">
                     <a href="#" class="style-none">
-                            <h3 class= "text-center"><?php echo $_SESSION["first_name"]; echo " " .$row["last_name"]?></h3>
+                            <h3 class= "text-center"><?php echo $freelancer["first_name"]; echo " " .$freelancer["last_name"]?></h3>
                         </a>
                     </div>
             </div>
@@ -78,43 +90,56 @@ if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
 
 
         <?php
-    
-        $q = "SELECT * FROM jobs WHERE flag = '0'";
-        $q = mysqli_query($connection,$q);
-        while($r = mysqli_fetch_assoc($q)){
-            
-            ?>
-            
-            <div class="col col-lg-3" style="min-width: 600px;max-width:600px" >
-            <div class="card mt-5 mb-5">
-                <div class="card-header">
-                        <?php echo $r["user_name"]; ?> <!-- NAME OF THE USER WHO POSTED THE JOB--> 
-                    <div class="float-right">
-                        <?php echo $r["date_time"]; ?> <!-- TIME IS IT POSTED--> 
+
+        $fid = $freelancer["id"];
+        $q = "SELECT * FROM has_skill WHERE freelancer_id = '$fid'";
+        $r = mysqli_query($connection,$q);
+        $skill_ids = array();
+        while($row = mysqli_fetch_assoc($r)){
+            array_push($skill_ids,$row["skill_id"]);
+        }
+
+        foreach ($skill_ids as $skill_id) {
+            $q = "SELECT job.id,job.job_title,skill.skill_name,job.description,complexity.complexity_text,expected_duration.duration_text FROM job inner join skill on job.main_skill_id = skill.id inner join complexity on job.complexity_id = complexity.id inner join expected_duration on job.expected_duration_id = expected_duration.id WHERE main_skill_id = '$skill_id'";
+            $result = mysqli_query($connection,$q);
+            if(!$result){
+                die("Query failed!" . mysqli_error($connection));
+            }
+            while($r = mysqli_fetch_assoc($result)){
+                
+                ?>
+                
+                <div class="col col-lg-3" style="min-width: 600px;max-width:600px" >
+                <div class="card mt-5 mb-5">
+                    <div class="card-body text-center">
+                        <h4 class="card-title"> <?php echo $r["job_title"]; ?> </h4>     <!-- THE CATOGORY--> 
+                        <p class="card-text"> <?php echo $r["description"]; ?></p>    <!-- DESCRIPTION-->
+                        Skill required : <p class="card-text"> <?php echo $r["skill_name"]; ?></p>
+                        Duration : <p class="card-text"> <?php echo $r["duration_text"]; ?></p>
+                        Complexity : <p class="card-text"> <?php echo $r["complexity_text"]; ?></p>
+                        <form name="propose" id="msform" action="employeedashboard.php" method="post">
+                        <div class="md-form">
+                            <input type="hidden" name="job_id" style="display:hidden" value="<?php echo $r["id"]?>">
+                            <label for="form1">Proposal amount in rupees</label>
+                            <input type="number" name="proposal_amount" class="form-control">
+                            <br>
+                            <input required type="submit" name="submit" class="btn btn-primary" value="Propose" />
+
+                        </div>
+                        </form>
                     </div>
                 </div>
-
-                <div class="card-body text-center">
-                    <h4 class="card-title"> <?php echo $r["job_title"]; ?> </h4>     <!-- THE CATOGORY--> 
-                    <p class="card-text"> <?php echo $r["job_description"]; ?></p>    <!-- DESCRIPTION-->
                 </div>
-            </div>
-            <br>
-            
-            <?php
+                <br>
+                
+                <?php
+            }
+        
         }
     
-        ?>
+       ?> 
         
-        
 
-
-
-<!-- ********************************************************************-->        
-<!-- IF YOU CAN ADD AN IMAGE WHILE POSTING THE JOB KEEP THIS OR DELETE IT--> 
-<!-- ********************************************************************--> 
- 
-                   </div>
      
             </div>
     </div>

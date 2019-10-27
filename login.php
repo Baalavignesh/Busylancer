@@ -161,7 +161,7 @@ if(isset($_POST["submit"])){
     else{
 
         //FREELANCER
-
+        echo "Freelancer";
         $query = "SELECT * FROM freelancer WHERE user_account_id = '$USER_ID' ";
         $result = mysqli_query($connection,$query);
 
@@ -171,7 +171,7 @@ if(isset($_POST["submit"])){
         }
         else{
             //HIRER
-
+            echo "Not a free";
             $query = "SELECT * FROM hire_manager WHERE user_account_id = '$USER_ID' ";
             $result = mysqli_query($connection,$query);
 
@@ -185,7 +185,7 @@ if(isset($_POST["submit"])){
 
 
         if($_SESSION["USER_TYPE"] == 0){
-            header("Location: employerdashboard.php");
+            //header("Location: postajob.php");
         }
         else if($_SESSION["USER_TYPE"] == 1){
             header("Location: profilepage.php");

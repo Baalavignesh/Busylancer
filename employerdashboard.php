@@ -6,68 +6,11 @@ ob_start();
 if(!isset($_SESSION["USER_ID"])){
     header("Location: index.php");
 }
+
+include("includes/getDetails.php");
+
+$hire_manager = getDetails();
 ?>
-
-
-<?php
-
-if(isset($_GET["accepted_USER_ID"])){
-    $id = $_GET["accepted_USER_ID"];
-    $job_id = $_GET["job_id"];
-    $poster_id = $_SESSION["USER_ID"];
-    
-    $setFlag = "UPDATE acceptedjobs SET flag='1' WHERE job_id = '$job_id'";
-    $resFlag = mysqli_query($connection,$setFlag);
-    if(!$resFlag){
-        die("fail");
-    }
-    $acceptor_name = $_GET["acceptor"];
-    $setFlag = "UPDATE jobs SET flag='1',job_acceptor='$acceptor_name' WHERE job_id = '$job_id'";
-    $resFlag = mysqli_query($connection,$setFlag);
-    if(!$resFlag){
-        die("fail");
-    }
-    
-}
-
-
-?>
-
-<?php
-
-function isJobAvailable($job_id){
-    global $connection;
-    
-    $query = "SELECT * FROM acceptedjobs WHERE job_id = '$job_id'";
-    $res = mysqli_query($connection,$query);
-    if(!$res){
-        die("b");
-    }
-    
-    $row = mysqli_fetch_assoc($res);
-    if($row["flag"] == "1"){
-        return false;
-    }
-    else{
-        return true;
-    }
-}
-
-?>
-
-
-<?php
-$id = $_SESSION["USER_ID"];
-$query = "SELECT * FROM user_account WHERE USER_ID = '$id'";
-$result = mysqli_query($connection,$query);
-if(!$result){
-    die("Failes!");
-}
-
-$row = mysqli_fetch_assoc($result);
-
-?>
-
 
 
 <html>
@@ -112,81 +55,48 @@ $row = mysqli_fetch_assoc($result);
             <div class="col-md-3 ">
                     <div class="card mt-3">
                     <a href="#">
-                        <img src="img/<?php echo $row['profile_picture'] ?>" alt="profileimage" class="img-circle card-img-top">
+                        <img src="<?php echo $hire_manager['profile_picture_url'] ?>" alt="profileimage" class="img-circle card-img-top">
                     </a>
 
                     <div class="card-footer">
                     <a href="#" class="style-none">
-                            <h3 class= "text-center"><?php echo $_SESSION["first_name"]; echo " " .$row["last_name"]?></h3>
+                            <h3 class= "text-center"><?php echo $hire_manager["first_name"]; echo " " .$hire_manager["last_name"]?></h3>
                         </a>
                     </div>
             </div>
         </div>
 
-
-
-
         <div class="col-lg-9">
 
-            <?php include("includes/employerbar.php") ?>
-            <?php
-            $id = $_SESSION["USER_ID"];
-            $q = "SELECT * FROM  acceptedjobs WHERE poster_id = '$id'";
-            $R = mysqli_query($connection,$q);
-            if(!$R){
-                die("Query failed");
-            }
-    
-            while($ROW = mysqli_fetch_assoc($R)){
-                if($ROW["flag"] == "1"){
-                    continue;
-                }
-                ?>
-                
-            <div class="card mt-5 mb-5" id = "post"> 
-                <div class="card-header">
-                        <?php echo $ROW["user_name"];?> has submitted his request to take up this Job<!-- NAME OF THE USER WHO ACCEPTED THE JOB--> 
-                    <?php
-                        $jobid = $ROW["job_id"];
-                        $jobq = "SELECT * FROM jobs WHERE job_id='$jobid'";
-                        $jobr = mysqli_query($connection,$jobq);
-                        if(!$jobr){
-                            die("Job query fail");
-                        }
-                        
-                        $jobrow = mysqli_fetch_assoc($jobr);
-                        $time = $jobrow["date_time"];
-                        $title = $jobrow["job_title"];
-                        $desc = $jobrow["job_description"];
-                    
-                    ?>
-                       
-                       <div class="float-right">
-                        Date and Time of Request: <?php echo $ROW["date_time"];?> <!-- TIME IS IT POSTED--> 
-                    </div>
-                </div>
+        <?php 
+        $hirer_id = $hire_manager["id"];
+
+        $query = "SELECT * FROM job WHERE hire_manager_id = '$hirer_id'";
+        $result = mysqli_query($connection,$query);
+        while($row = mysqli_fetch_assoc($result)){
+           ?>
+           
+           <div class="card mt-5 mb-5" id = "post"> 
 
                 <div class="card-body text-center">
-                    <h4 class="card-title"> <?php echo $title;?> </h4>     <!-- THE CATOGORY--> 
-                    <p class="card-text"> <?php echo $desc;?></p>    <!-- DESCRIPTION--> 
-                    <a class="btn btn-primary" href = "viewProfile.php?USER_ID=<?php echo $ROW["USER_ID"];?>">View profile</a>
-                    <a class="btn btn-primary" href = "employerdashboard.php?accepted_USER_ID=<?php echo $ROW["USER_ID"];?>&job_id=<?php echo $jobid?>&acceptor=<?php echo $ROW["user_name"];?>">Accept request</a>
-<!--                        <a class="btn btn-danger" hreft = "#" > Decline</a>-->
+                    <h4 class="card-title"> <?php echo $row["job_title"];?> </h4>     <!-- THE CATOGORY--> 
+                    <p class="card-text"> <?php echo $row["description"];?></p>    <!-- DESCRIPTION--> 
+
+                    <a class="btn btn-primary" href = "viewProposals.php?job_id=<?php echo $row["id"];?>">View proposals</a>
                 </div>
 
-            </div>    
-                
-                <?php
-            }
-            ?>
-            
-        
-           
-            </div>
-    </div>
+            </div>   
+
+           <?php 
+        }
+
+        ?>
+
+        </div>
 
 </div>
 
+</div>
     </section>
 
    

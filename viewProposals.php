@@ -3,24 +3,14 @@ include("includes/db.php");
 session_start();
 ob_start();
 
-if(!isset($_SESSION["USER_ID"]) || $_SESSION["USER_ID"] == -2){
+if(!isset($_SESSION["USER_ID"])){
     header("Location: index.php");
 }
 
+include("includes/getDetails.php");
+
+$hire_manager = getDetails();
 ?>
-
-<?php
-$id = $_SESSION["USER_ID"];
-$query = "SELECT * FROM users WHERE USER_ID = '$id'";
-$result = mysqli_query($connection,$query);
-if(!$result){
-    die("Failes!");
-}
-
-$row = mysqli_fetch_assoc($result);
-
-?>
-
 
 
 <html>
@@ -49,7 +39,7 @@ $row = mysqli_fetch_assoc($result);
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h1> <i class="fas fa-cog"></i>History of job requests</h1>
+                    <h1> <i class="fas fa-cog"></i>Dashboard</h1>
                 </div>
             </div>
         </div>
@@ -65,75 +55,53 @@ $row = mysqli_fetch_assoc($result);
             <div class="col-md-3 ">
                     <div class="card mt-3">
                     <a href="#">
-                        <img src="img/<?php echo $row['profile_picture'] ?>" alt="profileimage" class="img-circle card-img-top">
+                        <img src="<?php echo $hire_manager['profile_picture_url'] ?>" alt="profileimage" class="img-circle card-img-top">
                     </a>
 
                     <div class="card-footer">
                     <a href="#" class="style-none">
-                            <h3 class= "text-center"><?php echo $_SESSION["first_name"]; echo " " .$row["last_name"]?></h3>
+                            <h3 class= "text-center"><?php echo $hire_manager["first_name"]; echo " " .$hire_manager["last_name"]?></h3>
                         </a>
                     </div>
             </div>
         </div>
 
-
-
-
         <div class="col-lg-9">
 
-            <?php
-            $id = $_SESSION["USER_ID"];
-            $q = "SELECT * FROM acceptedjobs WHERE USER_ID = '$id'";
-            $R = mysqli_query($connection,$q);
-            if(!$R){
-                die("Query failed");
-            }
-    
-            while($ROW = mysqli_fetch_assoc($R)){
+        <?php
+        if(isset($_GET["job_id"])){
+            $job_id = $_GET["job_id"];
+            $query = "SELECT * FROM proposal join job on proposal.job_id = job.id join freelancer on proposal.freelancer_id = freelancer.id join user_account on freelancer.user_account_id = user_account.user_account_id WHERE job_id = '$job_id'";
+            $result = mysqli_query($connection,$query);
+            while($row = mysqli_fetch_array($result)){
                 ?>
-                
-            <div class="card mt-5 mb-5" id = "post"> 
-                <div class="card-header">
-                      <div class="text-center">
-                        Job posted by : <?php echo $ROW["poster_name"];?> <!-- TIME IS IT POSTED--> 
-                    </div>  
-                       <div class="text-center">
-                        Date and Time of requesting the Job: <?php echo $ROW["date_time"];?> <!-- TIME IS IT POSTED--> 
-                    </div>
-                </div>
-                <?php
-                $idwww = $ROW["job_id"];
-                $qwww = "SELECT * FROM jobs WHERE job_id = '$idwww'";
-                $Rwww = mysqli_query($connection,$qwww);
-                if(!$Rwww){
-                    die("Query failed");
-                }
-    
-                $ROWwww = mysqli_fetch_assoc($Rwww);
-                ?>
+                <div class="card mt-5 mb-5" id = "post"> 
+
                 <div class="card-body text-center">
-                    <h4 class="card-title"> <?php echo $ROWwww["job_title"];?> </h4>     <!-- THE CATOGORY--> 
-                    <p class="card-text"> <?php echo $ROWwww["job_description"];?></p>    <!-- DESCRIPTION-->
-<!--                        <a class="btn btn-danger" hreft = "#" > Decline</a>-->
-                    <p class="card-text"> <?php if($ROW["flag"] == "1"){echo "Your job request has been accepted! The employer will contact you soon.";}
-                        else{
-                            echo "Job request pending.";
-                        }?></p>
+                    Name : <h4 class="card-title"> <?php echo $row["first_name"];?> </h4>     <!-- THE CATOGORY--> 
+                    Time of proposal :<p class="card-text"> <?php echo $row["proposal_time"];?></p>    <!-- DESCRIPTION--> 
+
+                    Amount :<p class="card-text"> <?php echo $row[5];?></p>    <!-- DESCRIPTION--> 
+                    Location : <p class="card-text"> <?php echo $row["location"];?></p>
+                    Overview : <p class="card-text"> <?php echo $row["overview"];?></p>
+                    <a class="btn btn-primary" href = "singleProposal.php?proposal_id=<?php echo $row[0];?>">Consider proposal</a>
                 </div>
 
-            </div>    
-                
+                </div> 
+
+
                 <?php
+
+
             }
-            ?>
-            
-        
-           
-            </div>
-    </div>
+        } 
+
+        ?>
+        </div>
 
 </div>
 
+</div>
     </section>
 
    
